@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmers Mall – Loading</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+    body {
+      background-color:#1fa02d;
+      color:white;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      overflow:hidden;
+    }
+    /* floating circles */
+    .circle {
+      position:absolute;border-radius:50%;
+      background-color:rgba(255,255,255,0.1);
+      animation:float 10s infinite ease-in-out;
+    }
+    .circle:nth-child(1){width:150px;height:150px;top:10%;left:10%;}
+    .circle:nth-child(2){width:80px;height:80px;top:30%;right:15%;}
+    .circle:nth-child(3){width:120px;height:120px;bottom:20%;left:20%;}
+    .circle:nth-child(4){width:60px;height:60px;bottom:25%;right:30%;}
+
+    @keyframes float {
+      0%{transform:translateY(0);}
+      50%{transform:translateY(-20px);}
+      100%{transform:translateY(0);}
+    }
+
+    .logo {
+      width:60px;height:60px;margin-bottom:10px;
+      background-color:rgba(255,255,255,0.15);
+      border-radius:50%;
+      display:flex;justify-content:center;align-items:center;
+      font-size:32px;
+    }
+
+    .icons {
+      display:flex;justify-content:center;gap:40px;margin:20px 0;
+    }
+    .icons div {
+      display:flex;flex-direction:column;align-items:center;font-size:0.9rem;
+    }
+    .icons i {font-size:24px;margin-bottom:5px;}
+
+    /* loading bar */
+    .loading-bar {
+      width:60%;height:6px;background:rgba(255,255,255,0.2);
+      border-radius:3px;overflow:hidden;margin-bottom:15px;
+    }
+    .loading-fill {
+      height:100%;background:white;width:0%;
+      transition:width 0.06s linear;
+    }
+
+    .bottom-text {
+      font-size:0.85rem;margin-top:10px;text-align:center;
+    }
+    .bottom-text span {margin:0 5px;}
+  </style>
+  <script src="https://kit.fontawesome.com/3f56f6f2fd.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- floating circles -->
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+
+  <div class="logo">🌱</div>
+  <h1>Farmers Mall</h1>
+  <p>Your Local Farm, On Your Phone</p>
+
+  <div class="icons">
+    <div><i class="fas fa-shopping-cart"></i>Shop</div>
+    <div><i class="fas fa-truck"></i>Deliver</div>
+    <div><i class="fas fa-leaf"></i>Fresh</div>
+  </div>
+
+  <div class="loading-bar">
+    <div class="loading-fill" id="loading-fill"></div>
+  </div>
+  <p>Loading fresh produce...</p>
+
+  <div class="bottom-text">
+    Connecting farmers to your table <br>
+    100% Organic <span>•</span> Farm Fresh <span>•</span> Local Delivery
+  </div>
+
+  <script>
+    let progress = 0;
+    const fill = document.getElementById('loading-fill');
+    let loadingInterval = setInterval(() => {
+      progress += 2;
+      fill.style.width = progress + '%';
+      if(progress >= 100) {
+        clearInterval(loadingInterval);
+        // Redirect to your landing page after loading:
+        window.location.href = "landing.html"; 
+      }
+    }, 60);
+  </script>
+</body>
+</html>

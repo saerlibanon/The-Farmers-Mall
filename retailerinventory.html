@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Inventory – The Farmer’s Mall</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-white border-b shadow-sm sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+
+    <!-- Left: Logo -->
+    <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='sellerdashboard.html'">
+      <h1 class="text-xl font-bold text-green-700">The Farmer's Mall</h1>
+    </div>
+
+    <!-- Center: Search -->
+    <div class="flex-1 mx-8 max-w-xl">
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
+        <input id="searchInput" type="text" placeholder="Search..."
+          class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600 text-sm">
+      </div>
+    </div>
+
+    <!-- Right: Icons & Profile -->
+    <div class="flex items-center space-x-6">
+      
+      <!-- Messages -->
+      <a href="seller-message.html" class="relative cursor-pointer">
+        <i class="fa-regular fa-comment text-xl text-gray-600"></i>
+        <span class="absolute -top-2 -right-2 bg-green-700 text-white text-xs font-semibold rounded-full px-1.5">3</span>
+      </a>
+
+      <!-- Notifications -->
+      <a href="seller-notifications.html" class="relative cursor-pointer">
+        <i class="fa-regular fa-bell text-xl text-gray-600"></i>
+        <span class="absolute -top-2 -right-2 bg-green-700 text-white text-xs font-semibold rounded-full px-1.5">5</span>
+      </a>
+
+      <!-- Profile -->
+      <a href="sellerprofile.html" class="flex items-center space-x-2 cursor-pointer">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-8 h-8 rounded-full" alt="Seller Profile">
+        <div class="profile-info">
+          <p class="text-sm font-medium text-gray-800">Mesa Farm</p>
+          <p class="text-xs text-gray-500">Seller</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</header>
+</body>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto px-6 py-8 space-y-6 w-full">
+      <!-- Back & Title -->
+      <div class="flex items-center space-x-3">
+        <button onclick="window.location.href='retailerdashboard.html'" class="text-gray-600 hover:text-black">
+          <i class="fa-solid fa-arrow-left text-lg"></i>
+        </button>
+        <h2 class="text-lg font-semibold">Inventory Status</h2>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <input id="tableSearchInput" type="text" placeholder="Search products..." class="border rounded-md px-3 py-2 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-green-600">
+          <button id="filterBtn" class="border px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100 flex items-center gap-1">
+            <i class="fa-solid fa-filter"></i> Filter
+          </button>
+          <button id="sortBtn" class="border px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100 flex items-center gap-1">
+            <i class="fa-solid fa-sort"></i> Sort
+          </button>
+        </div>
+        <button id="addInventoryBtn" class="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-800 flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Add Inventory
+        </button>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div id="filterTabs" class="flex flex-wrap items-center gap-3 mt-2">
+        <button data-filter="All" class="filter-tab bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">All</button>
+        <button data-filter="In Stock" class="filter-tab bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">In Stock</button>
+        <button data-filter="Low Stock" class="filter-tab bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">Low Stock</button>
+        <button data-filter="Out of Stock" class="filter-tab bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">Out of Stock</button>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-white rounded-lg shadow-sm overflow-hidden min-h-[500px]">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-gray-100 border-b text-gray-700 font-semibold">
+            <tr>
+              <th class="py-3 px-5">Product</th>
+              <th class="py-3 px-5">Stock Level</th>
+              <th class="py-3 px-5">Status</th>
+              <th class="py-3 px-5">Last Updated</th>
+              <th class="py-3 px-5 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody" class="divide-y"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div id="paginationContainer" class="flex justify-center items-center gap-2 mt-6"></div>
+    </div>
+  </main>
+
+  <!-- Add/Edit Product Modal (same as sellerproducts.html) -->
+  <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <h3 id="modalTitle" class="font-semibold text-lg mb-4">Add New Product</h3>
+      <form id="productForm" class="space-y-4">
+        <input type="hidden" id="productId">
+        <div>
+          <label for="productName" class="block text-sm font-medium text-gray-700">Product Name</label>
+          <input type="text" id="productName" required class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+        </div>
+        <div>
+          <label for="productCategory" class="block text-sm font-medium text-gray-700">Category</label>
+          <select id="productCategory" required class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none bg-white">
+            <option>Vegetables</option>
+            <option>Fruits</option>
+            <option>Dairy</option>
+            <option>Meat</option>
+            <option>Seafood</option>
+            <option>Bakery</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="productPrice" class="block text-sm font-medium text-gray-700">Price (per unit)</label>
+            <input type="number" id="productPrice" step="0.01" required class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+          </div>
+          <div>
+            <label for="productUnit" class="block text-sm font-medium text-gray-700">Unit (e.g., kg)</label>
+            <input type="text" id="productUnit" required class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+          </div>
+        </div>
+        <div>
+          <label for="productStock" class="block text-sm font-medium text-gray-700">Stock</label>
+          <input type="number" id="productStock" required class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="closeProductModal" class="px-4 py-2 border rounded-md text-sm">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md text-sm">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="text-white py-12" style="background-color: #1B5E20;">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-8">
+      
+      <!-- Logo/About -->
+      <div>
+        <h3 class="font-bold text-lg mb-3">The Farmer's Mall</h3>
+        <p class="text-gray-300 text-sm">
+          Fresh, organic produce delivered straight to your home from local farmers.
+        </p>
+      </div>
+      
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-bold text-lg mb-3">Quick Links</h3>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li><a href="#" class="hover:underline">About Us</a></li>
+          <li><a href="#" class="hover:underline">Contact</a></li>
+          <li><a href="#" class="hover:underline">FAQ</a></li>
+          <li><a href="#" class="hover:underline">Support</a></li>
+        </ul>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <h3 class="font-bold text-lg mb-3">Categories</h3>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li><a href="#" class="hover:underline">Vegetables</a></li>
+          <li><a href="#" class="hover:underline">Fruits</a></li>
+          <li><a href="#" class="hover:underline">Dairy</a></li>
+          <li><a href="#" class="hover:underline">Meat</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h3 class="font-bold text-lg mb-3">Follow Us</h3>
+        <div class="flex space-x-4 text-xl">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-green-800 text-center text-gray-400 text-sm mt-10 pt-6">
+      © 2025 The Farmer's Mall. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const addInventoryBtn = document.getElementById('addInventoryBtn');
+      const productModal = document.getElementById('productModal');
+      const closeProductModal = document.getElementById('closeProductModal');
+      const productForm = document.getElementById('productForm');
+      const modalTitle = document.getElementById('modalTitle');
+
+      const sortBtn = document.getElementById('sortBtn');
+      const filterBtn = document.getElementById('filterBtn');
+      const filterTabs = document.getElementById('filterTabs');
+      const searchInput = document.getElementById('tableSearchInput');
+
+      const inventoryTableBody = document.getElementById('inventoryTableBody');
+      const paginationContainer = document.getElementById('paginationContainer');
+
+      const initialProducts = [
+        { id: 1, name: 'Red Onions', category: 'Vegetables', price: 55, unit: 'kg', stock: 5, img: 'seller/red-onion.png', lastUpdated: '2023-10-28T10:00:00Z' },
+        { id: 2, name: 'Iceberg Lettuce', category: 'Vegetables', price: 40, unit: 'kg', stock: 42, img: 'seller/lettuce.png', lastUpdated: '2023-10-28T11:00:00Z' },
+        { id: 3, name: 'Organic Garlic', category: 'Vegetables', price: 80, unit: 'kg', stock: 0, img: 'seller/garlic.png', lastUpdated: '2023-10-27T09:00:00Z' },
+        { id: 4, name: 'Honeycrisp Apples', category: 'Fruits', price: 150, unit: 'kg', stock: 128, img: 'seller/apple.png', lastUpdated: '2023-10-28T12:00:00Z' },
+        { id: 5, name: 'Baby Carrots', category: 'Vegetables', price: 70, unit: 'kg', stock: 8, img: 'seller/carrots.png', lastUpdated: '2023-10-28T13:00:00Z' },
+        { id: 6, name: 'Roma Tomatoes', category: 'Vegetables', price: 60, unit: 'kg', stock: 67, img: 'seller/tomato.png', lastUpdated: '2023-10-28T14:00:00Z' },
+      ];
+
+      let allProducts = JSON.parse(localStorage.getItem('sellerProducts')) || initialProducts;
+      if (!localStorage.getItem('sellerProducts')) {
+        localStorage.setItem('sellerProducts', JSON.stringify(allProducts));
+      }
+
+      let displayedProducts = [...allProducts];
+      let currentPage = 1;
+      const itemsPerPage = 6;
+
+      const getStatus = (stock) => {
+        if (stock === 0) return 'Out of Stock';
+        if (stock <= 10) return 'Low Stock';
+        return 'In Stock';
+      };
+
+      const getStatusClass = (status) => {
+        if (status === 'Out of Stock') return 'bg-red-100 text-red-700';
+        if (status === 'Low Stock') return 'bg-orange-100 text-orange-600';
+        return 'bg-green-100 text-green-600';
+      };
+
+      const renderInventory = () => {
+        inventoryTableBody.innerHTML = '';
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const paginatedProducts = displayedProducts.slice(startIndex, startIndex + itemsPerPage);
+
+        paginatedProducts.forEach(p => {
+          const status = getStatus(p.stock);
+          const statusClass = getStatusClass(status);
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-gray-50';
+          tr.innerHTML = `
+            <td class="py-3 px-5 flex items-center gap-2">
+              <img src="${p.img || 'seller/default.png'}" class="w-8 h-8 object-cover">
+              ${p.name}
+            </td>
+            <td class="py-3 px-5"><span class="font-medium">${p.stock}</span> ${p.unit}</td>
+            <td class="py-3 px-5"><span class="${statusClass} px-2 py-1 rounded-full text-xs font-medium">${status}</span></td>
+            <td class="py-3 px-5 text-gray-500">${new Date(p.lastUpdated || Date.now()).toLocaleDateString()}</td>
+            <td class="py-3 px-5 text-right">
+              <button class="edit-btn text-green-600 hover:text-green-800" data-id="${p.id}"><i class="fa-regular fa-pen-to-square"></i></button>
+            </td>
+          `;
+          inventoryTableBody.appendChild(tr);
+        });
+        renderPagination();
+      };
+
+      const renderPagination = () => {
+        paginationContainer.innerHTML = '';
+        const totalPages = Math.ceil(displayedProducts.length / itemsPerPage);
+        if (totalPages <= 1) return;
+
+        for (let i = 1; i <= totalPages; i++) {
+          const pageBtn = document.createElement('button');
+          pageBtn.textContent = i;
+          pageBtn.className = `border w-8 h-8 rounded-md text-gray-600 hover:bg-gray-100 text-sm ${i === currentPage ? 'bg-green-600 text-white' : ''}`;
+          pageBtn.onclick = () => { currentPage = i; renderInventory(); };
+          paginationContainer.appendChild(pageBtn);
+        }
+      };
+
+      const applyFiltersAndSearch = () => {
+        const activeFilter = document.querySelector('.filter-tab.bg-green-600').dataset.filter;
+        const searchTerm = searchInput.value.toLowerCase();
+
+        let filtered = allProducts.filter(p => {
+          const statusMatch = activeFilter === 'All' || getStatus(p.stock) === activeFilter;
+          const searchMatch = p.name.toLowerCase().includes(searchTerm);
+          return statusMatch && searchMatch;
+        });
+
+        displayedProducts = filtered;
+        currentPage = 1;
+        renderInventory();
+      };
+
+      // Modal Logic
+      const openModal = (modal) => modal.classList.remove('hidden');
+      const closeModal = (modal) => modal.classList.add('hidden');
+
+      addInventoryBtn.addEventListener('click', () => {
+        modalTitle.textContent = 'Add New Product';
+        productForm.reset();
+        document.getElementById('productId').value = '';
+        openModal(productModal);
+      });
+
+      closeProductModal.addEventListener('click', () => closeModal(productModal));
+
+      // Form submission
+      productForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('productId').value;
+        const newProductData = {
+          id: id ? parseInt(id) : Date.now(),
+          name: document.getElementById('productName').value,
+          category: document.getElementById('productCategory').value,
+          price: parseFloat(document.getElementById('productPrice').value),
+          unit: document.getElementById('productUnit').value,
+          stock: parseInt(document.getElementById('productStock').value),
+          img: 'seller/default.png',
+          lastUpdated: new Date().toISOString()
+        };
+
+        if (id) {
+          allProducts = allProducts.map(p => p.id === newProductData.id ? {...p, ...newProductData} : p);
+        } else {
+          allProducts.unshift(newProductData);
+        }
+        localStorage.setItem('sellerProducts', JSON.stringify(allProducts));
+        applyFiltersAndSearch();
+        closeModal(productModal);
+      });
+
+      // Edit button
+      inventoryTableBody.addEventListener('click', (e) => {
+        const editBtn = e.target.closest('.edit-btn');
+        if (editBtn) {
+          const id = editBtn.dataset.id;
+          const product = allProducts.find(p => p.id == id);
+          if (product) {
+            modalTitle.textContent = 'Edit Product';
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productUnit').value = product.unit;
+            document.getElementById('productStock').value = product.stock;
+            openModal(productModal);
+          }
+        }
+      });
+
+      // Filter Tabs Logic
+      filterTabs.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-tab')) {
+          document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.classList.remove('bg-green-600', 'text-white');
+            tab.classList.add('bg-gray-200', 'text-gray-700');
+          });
+          e.target.classList.add('bg-green-600', 'text-white');
+          e.target.classList.remove('bg-gray-200', 'text-gray-700');
+          applyFiltersAndSearch();
+        }
+      });
+
+      // Search Logic
+      searchInput.addEventListener('input', () => {
+        applyFiltersAndSearch();
+      });
+      document.getElementById('tableSearchInput').addEventListener('input', (e) => {
+        searchInput.value = e.target.value;
+        applyFiltersAndSearch();
+      });
+
+      // Initial render
+      renderInventory();
+    });
+  </script>
+</body>
+</html>

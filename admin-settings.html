@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Settings – The Farmer's Mall</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-100 text-gray-800 flex">
+
+  <!-- Sidebar -->
+  <aside class="bg-green-800 text-white w-64 min-h-screen p-4 flex flex-col justify-between">
+    <div>
+      <div class="text-center mb-10">
+        <h1 class="text-2xl font-bold">The Farmer's Mall</h1>
+        <p class="text-sm text-green-200">Admin Panel</p>
+      </div>
+      <nav class="space-y-2">
+        <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-green-700">
+          <i class="fa-solid fa-tachometer-alt w-5"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-users.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-green-700">
+          <i class="fa-solid fa-users w-5"></i>
+          <span>Users</span>
+        </a>
+        <a href="admin-retailers.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-green-700">
+          <i class="fa-solid fa-store w-5"></i>
+          <span>Retailers</span>
+        </a>
+        <a href="admin-products.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-green-700">
+          <i class="fa-solid fa-box w-5"></i>
+          <span>Products</span>
+        </a>
+        <a href="admin-orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-green-700">
+          <i class="fa-solid fa-receipt w-5"></i>
+          <span>Orders</span>
+        </a>
+        <a href="admin-settings.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-green-700">
+          <i class="fa-solid fa-cog w-5"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </div>
+    <div>
+      <a href="login.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-green-700">
+        <i class="fa-solid fa-sign-out-alt w-5"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1">
+    <!-- Header -->
+    <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+      <h2 class="text-xl font-semibold">Settings</h2>
+      <div class="flex items-center gap-4">
+        <a href="admin-notification.html">
+          <i class="fa-regular fa-bell text-xl text-gray-600 cursor-pointer"></i>
+        </a>
+        <div class="flex items-center gap-2 cursor-pointer">
+          <img src="https://randomuser.me/api/portraits/men/40.jpg" class="w-8 h-8 rounded-full" alt="Admin">
+          <div>
+            <p class="text-sm font-medium">Admin User</p>
+            <p class="text-xs text-gray-500">admin@farmersmall.com</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="p-6 space-y-6">
+      <!-- General Settings -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold border-b pb-3 mb-4">General Settings</h3>
+        <form class="space-y-4 text-sm">
+          <div>
+            <label for="siteName" class="block font-medium text-gray-700">Site Name</label>
+            <input type="text" id="siteName" value="The Farmer's Mall" class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+          </div>
+          <div>
+            <label for="siteUrl" class="block font-medium text-gray-700">Site URL</label>
+            <input type="url" id="siteUrl" value="https://www.farmersmall.com" class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+          </div>
+          <div class="pt-2 text-right">
+            <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded-md font-medium hover:bg-green-700">Save General Settings</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Admin Profile Settings -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold border-b pb-3 mb-4">Admin Profile</h3>
+        <form class="space-y-4 text-sm">
+          <div>
+            <label for="adminEmail" class="block font-medium text-gray-700">Admin Email</label>
+            <input type="email" id="adminEmail" value="admin@farmersmall.com" class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+          </div>
+          <div>
+            <label for="newPassword" class="block font-medium text-gray-700">New Password</label>
+            <input type="password" id="newPassword" placeholder="Leave blank to keep current password" class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none">
+          </div>
+          <div class="pt-2 text-right">
+            <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded-md font-medium hover:bg-green-700">Update Profile</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

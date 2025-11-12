@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Profile – The Farmer's Mall</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-green-700">Admin Profile</h1>
+      <a href="admin-dashboard.html" class="text-sm text-green-600 hover:underline">← Back</a>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto bg-white mt-10 rounded-lg shadow p-6 space-y-4">
+    <div class="text-center">
+      <img src="images/admin.png" class="w-24 h-24 rounded-full mx-auto">
+      <h2 class="font-semibold text-xl mt-2">Admin User</h2>
+      <p class="text-gray-500 text-sm">admin@farmersmall.com</p>
+    </div>
+
+    <form class="space-y-3">
+      <div>
+        <label class="text-sm font-semibold">Full Name</label>
+        <input type="text" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-green-500" value="Admin User">
+      </div>
+      <div>
+        <label class="text-sm font-semibold">Email</label>
+        <input type="email" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-green-500" value="admin@farmersmall.com">
+      </div>
+      <div>
+        <label class="text-sm font-semibold">Password</label>
+        <input type="password" class="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-green-500" placeholder="••••••••">
+      </div>
+      <button class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">Update Profile</button>
+    </form>
+  </main>
+</body>
+</html>
